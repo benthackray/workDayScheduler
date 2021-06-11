@@ -2,15 +2,10 @@
 let currentDayEl = moment().format('dddd, MMM Do YYYY');
 $("#currentDay").text("Today is "+currentDayEl);
 
-
+// This is how we will get the id's from each timeblock
 let currentHour = moment().format('HH');
 
-let scheduleHour = $(".task").attr('id');
-
 let taskEl = $(".task");
-
-
-// console.log(scheduleHour);
 
 
 // I want this function to take each element with the 'task' class, find its id, compare this id to the current hour and add a class accordingly
@@ -26,7 +21,22 @@ taskEl.each( function background() {
     } else {
         $(this).addClass('future')
     }
+
 })
 
-// I want this function to take the input from the textarea and put it into local storage when the save button is pressed
+// Set the save button to put input to local storage
+$(".saveBtn").on("click", function () {
+// get the input of id of sibling with the task class
+    var taskInput = $(this).siblings(".task").val();
+    var hourEl = $(this).siblings(".task").attr("id");
+// puts the input into local storage with a key identical to the id
+    localStorage.setItem(hourEl, taskInput);
+})
 
+// Gets items from local storage and populates the time block
+taskEl.each( function displayTask(){
+    let hourKey = $(this).attr('id');
+    $(this).val(localStorage.getItem(hourKey))
+
+}
+)
